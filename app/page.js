@@ -10,9 +10,9 @@ export default function Home() {
             <h1>gen_sheep</h1>
             <div className={styles.display_sheep}>
                 <Sheep colours={{
-                    body: 'green',
+                    body: 'silver',
                     ear: 'black',
-                    face: 'white',
+                    face: '#222222',
                     eye: 'white',
                     pupil: 'black',
                     leg: 'black',
