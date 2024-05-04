@@ -1,5 +1,6 @@
+import Container from "@/layout/Container/Container";
 import "./globals.css";
-import styles from './layout.module.css';
+import Center from "@/layout/Center/Center";
 
 export const metadata = {
     title: "gen_sheep",
@@ -10,11 +11,11 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body>
-                <div className={styles.container}>
-                    <div className={styles.center}>
+                <Container>
+                    <Center>
                         {children}
-                    </div>
-                </div>  
+                    </Center>
+                </Container>
             </body>
         </html>
     );

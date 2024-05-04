@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 import styles from "./page.module.css";
-import Sheep from './components/Sheep/Sheep';
+import Sheep from '@/components/Sheep/Sheep';
 
 export default function Home() {
     return (
