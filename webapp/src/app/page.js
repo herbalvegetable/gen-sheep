@@ -1,25 +1,40 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
 
 import styles from "./page.module.css";
 
 import Center from '@/layout/Center/Center';
 import Sheep from '@/components/Sheep/Sheep';
 import { useGenerateSheeps } from '@/hooks/useGenerateSheeps';
+import Left from '@/layout/Left/Left';
+
+function SmallSheep({ sheep, handleSelect }) {
+
+    const { fill } = sheep;
+
+    return (
+        <div className={styles.sheep_container} onClick={e => handleSelect(sheep)}>
+            <Sheep fill={fill} />
+        </div>
+    )
+}
 
 export default function Home() {
 
     const [displaySheep, setDisplaySheep] = useState({
-        fill: 'silver/black/#222/white/black/black',
+        fill: 'white/black/#222/white/black',
     });
     const [prevSheeps, setPrevSheeps] = useState([]);
     const addPrevSheep = sheep => {
-        let newPrevSheeps = [...prevSheeps, {...sheep}];
+        let newPrevSheeps = [{ ...sheep }, ...prevSheeps];
+        // let newPrevSheeps = [...prevSheeps, { ...sheep }];
         setPrevSheeps(newPrevSheeps);
     }
 
     useEffect(() => {
-        
+
     }, []);
 
     const handleRoll = e => {
@@ -32,26 +47,58 @@ export default function Home() {
         addPrevSheep(newSheep);
     }
 
+    let displaySheepRef = useRef(null);
+    const handleDownload = e => {
+        console.log(displaySheepRef.current);
+        domtoimage.toBlob(displaySheepRef.current)
+            .then(function (blob) {
+                window.saveAs(blob, 'my_gen_sheep.png');
+            });
+    }
+
+    const handleSelect = sheep => {
+        setDisplaySheep(sheep)
+        setCustomSheep(sheep.fill);
+    }
+
+    const [customSheep, setCustomSheep] = useState('white/black/#222/white/black')
+    const handleCreate = sheepTxt => {
+        if(!customSheep) return;
+
+        const [fill, accessories] = sheepTxt.split('|').map(line => line.trim());
+        let sheep = {fill, accessories};
+        setDisplaySheep(sheep);
+        addPrevSheep(sheep);
+        setCustomSheep('');
+    }
+
     return (
         <>
-            <Center>
+            <Left>
                 <div className={styles.container}>
-                    <h1>gen_sheep</h1>
+                    <span className={styles.title}>gen_sheep</span>
                     <div className={styles.display_sheep}>
-                        <Sheep
-                            fill={displaySheep.fill}
-                        />
+                        <div className={styles.download_container} ref={displaySheepRef}>
+                            <Sheep
+                                fill={displaySheep.fill}
+                            />
+                        </div>
                     </div>
-                    <button className={styles.roll_btn} onClick={handleRoll}>Roll Sheep</button>
+                    <div className={styles.actions}>
+                        <button className={styles.action_btn} onClick={handleRoll}>Roll Sheep</button>
+                        <button className={styles.action_btn} onClick={handleDownload}>Download</button>
+                    </div>
+                    <div className={styles.custom}>
+                        <textarea className={styles.textarea} value={customSheep} onChange={e => setCustomSheep(e.target.value)} />
+                        <button className={styles.action_btn} onClick={e => handleCreate(customSheep)}>Create</button>
+                    </div>
                 </div>
+            </Left>
+            <Center>
                 <div className={styles.prev_sheeps}>
                     {
                         prevSheeps.map((sheep, i) => {
-                            const { fill } = sheep;
-
-                            return <div key={i.toString()} className={styles.sheep_container}>
-                                <Sheep fill={fill}/>
-                            </div>
+                            return <SmallSheep key={i.toString()} sheep={sheep} handleSelect={handleSelect} />
                         })
                     }
                 </div>
