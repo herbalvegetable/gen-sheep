@@ -1,6 +1,7 @@
 .center{
     display: flex;
     flex-direction: column;
+    flex: 3;
 
     max-width: 530px;
     width: 100%;

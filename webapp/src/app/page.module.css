@@ -64,7 +64,11 @@
     flex-direction: row;
 }
 .custom .textarea{
-
+    border: none;
+    background-color: #222;
+    color: white;
+    font: inherit;
+    padding: 0.5em 1em;
 }
 
 .prev_sheeps{
@@ -74,18 +78,22 @@
     margin-top: 1.5em;
     margin-bottom: 1.5em;
 }
-.prev_sheeps > .sheep_container{
+.prev_sheeps > .small_sheep_container{
     width: 92px;
     height: 92px;
-    
-    /* animation: fadeInAnimation ease-in-out 0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards; */
 
     transition: 0.2s;
     cursor: pointer;
 }
-.prev_sheeps > .sheep_container:hover{
+.prev_sheeps > .small_sheep_container.animated{
+    animation: fadeInAnimation ease-in-out 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+    transition: 0.2s;
+    cursor: pointer;
+}
+.prev_sheeps > .small_sheep_container:hover{
     transform: translateX(-10px) translateY(-10px);
     z-index: 10;
 }
@@ -93,6 +101,7 @@
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
+        transform: translateX(-25px);
     }
     100% {
         opacity: 1;

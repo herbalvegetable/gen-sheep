@@ -69,14 +69,14 @@ export default function Sheep({ fill }) {
             }
 
             {
-                [21, 34].map((leftPct, i) => <div key={i.toString()} style={{
+                [22, 34].map((leftPct, i) => <div key={i.toString()} style={{
                     position: 'absolute',
                     backgroundColor: 'black',
                     border: `${LINE_WIDTH}px solid black`,
-                    width: '6%',
-                    height: '6%',
+                    width: '5%',
+                    height: '5%',
                     borderRadius: '50%',
-                    bottom: '40%',
+                    bottom: '41%',
                     left: `${leftPct}%`,
                 }}></div>)
             }

@@ -10,12 +10,12 @@ import Sheep from '@/components/Sheep/Sheep';
 import { useGenerateSheeps } from '@/hooks/useGenerateSheeps';
 import Left from '@/layout/Left/Left';
 
-function SmallSheep({ sheep, handleSelect }) {
+function SmallSheep({ sheep, handleSelect, animated }) {
 
     const { fill } = sheep;
 
     return (
-        <div className={styles.sheep_container} onClick={e => handleSelect(sheep)}>
+        <div className={`${styles.small_sheep_container} ${animated ? styles.animated : ''}`} onClick={e => handleSelect(sheep)}>
             <Sheep fill={fill} />
         </div>
     )
@@ -44,6 +44,7 @@ export default function Home() {
         let newSheep = useGenerateSheeps(1)[0];
 
         setDisplaySheep(newSheep);
+        setCustomSheep(newSheep.fill);
         addPrevSheep(newSheep);
     }
 
@@ -89,16 +90,17 @@ export default function Home() {
                         <button className={styles.action_btn} onClick={handleDownload}>Download</button>
                     </div>
                     <div className={styles.custom}>
-                        <textarea className={styles.textarea} value={customSheep} onChange={e => setCustomSheep(e.target.value)} />
+                        <textarea className={styles.textarea} value={customSheep} onChange={e => setCustomSheep(e.target.value)} spellCheck={false} rows={5}/>
                         <button className={styles.action_btn} onClick={e => handleCreate(customSheep)}>Create</button>
                     </div>
                 </div>
             </Left>
             <Center>
                 <div className={styles.prev_sheeps}>
+                    {prevSheeps[0] && <SmallSheep key={prevSheeps[0].fill || ''} sheep={prevSheeps[0]} handleSelect={handleSelect} animated={true}/>}
                     {
-                        prevSheeps.map((sheep, i) => {
-                            return <SmallSheep key={i.toString()} sheep={sheep} handleSelect={handleSelect} />
+                        prevSheeps.slice(1).map((sheep, i) => {
+                            return <SmallSheep key={i.toString()} sheep={sheep} handleSelect={handleSelect} animated={false}/>
                         })
                     }
                 </div>
